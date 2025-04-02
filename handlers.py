@@ -40,7 +40,7 @@ def get_user_keyboard() -> ReplyKeyboardMarkup:
 async def start_command(message: types.Message):
     """Start komandasi: foydalanuvchi yoki admin ekanini aniqlaydi"""
     try:
-        photo_path = r"C:\Users\Umid\PycharmProjects\PythonProject2\images\welcometc.PNG"
+        photo_path = "images/welcometc.PNG"
         if not os.path.exists(photo_path):
             raise FileNotFoundError(f"Rasm topilmadi: {photo_path}")
 
