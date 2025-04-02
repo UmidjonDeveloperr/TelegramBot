@@ -1,13 +1,11 @@
 import asyncio
 import logging
-import os
-
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
 from config import BOT_TOKEN, ADMIN_ID
 from handlers import router
-from flask import Flask
+
 
 # Logging sozlamalari
 logging.basicConfig(
@@ -16,9 +14,6 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 logger = logging.getLogger(__name__)
-
-# Flask ilovasini yaratish
-app = Flask(__name__)
 
 async def main():
     try:
@@ -31,6 +26,7 @@ async def main():
 
         # Routerlarni yuklash (admin birinchi, keyin user)
         dp.include_router(router)
+        #dp.include_router(user.router)
 
         # Eski updateslarni tozalash
         await bot.delete_webhook(drop_pending_updates=True)
@@ -45,16 +41,9 @@ async def main():
             await bot.session.close()
             logger.info("Bot sessiyasi yopildi")
 
-@app.route("/")  # Flask uchun yo'l
-def index():
-    return "Bot is running!"  # Sahifa haqida ma'lumot
-
 if __name__ == "__main__":
     try:
-        # Botni asyncio yordamida ishga tushirish
-        loop = asyncio.get_event_loop()
-        loop.create_task(main())
-        app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))  # Portni o'rnatish
+        asyncio.run(main())
     except KeyboardInterrupt:
         logger.info("Bot to'xtatildi")
     except Exception as e:
